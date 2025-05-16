@@ -12,7 +12,7 @@
         pkgs = import nixpkgs { inherit system; };
         gitzeug = pkgs.rustPlatform.buildRustPackage rec {
           pname = "gitzeug";
-          version = "0.3.0";
+          version = "0.4.0";
           src = ./.;
           cargoLock = {
             lockFile = ./Cargo.lock;
