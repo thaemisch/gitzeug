@@ -14,6 +14,7 @@ The name **gitzeug** is inspired by the German word *Werkzeug*, which means "too
 - **Download Specific Files or Directories**: Clone only the files or directories you need from a Git repository using sparse checkout.
 - **Streamlined Push Workflow**: Stage all changes, commit with a message, and push in a single command.
 - **Squash**: Squash the last n commits with a custom commit message.
+- **Browse**: Browse the file tree of the repo without cloning it.
 
 ## Requirements
 ✅ `git`
@@ -31,6 +32,10 @@ The name **gitzeug** is inspired by the German word *Werkzeug*, which means "too
       inputs.gitzeug.packages.${pkgs.system}.gitzeug
    ];
    ```
+
+### Windows, Arch Linux, Debian & Others
+Adding the package to apt, aur and winget is planned at a more mature state of the project.
+
 ### Build from source
 1. Ensure you have [Rust](https://www.rust-lang.org/) installed.
 2. Clone this repository:
@@ -51,42 +56,12 @@ The name **gitzeug** is inspired by the German word *Werkzeug*, which means "too
    ```
 
 ## Usage
-
-### Download Files or Directories
-
-```sh
-gitzeug dl -u <repo-url> -o <output-dir> -f <files-or-directories>
-```
-
-- `-u` or `--url`: The URL of the Git repository.
-- `-o` or `--output`: The output directory where files will be saved.
-- `-f` or `--files`: A comma-separated list of files or directories to download.
-
-Example:
-```sh
-gitzeug dl -u https://github.com/thaemisch/gitzeug.git -o ./output -f README.md,src
-```
-
-### Push Changes
-
-```sh
-gitzeug push <commit-message>
-```
-
-- `<commit-message>`: The message for the commit.
-
-Example:
-```sh
-gitzeug push "Updated README"
-```
-### Squash
 ```sh 
-gitzeug squash <number> <commit-message>
+gitzeug -h
 ```
-
-- `<number>`: Number of commits to Squash.
-- `<commit-message>`: The message for the commit.
-
+```sh 
+gitzeug <command> -h
+```
 ## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
