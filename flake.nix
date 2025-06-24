@@ -18,7 +18,10 @@
             lockFile = ./Cargo.lock;
           };
           buildInputs = [ pkgs.git ];
-          nativeBuildInputs = [ pkgs.pkg-config ];
+          nativeBuildInputs = [ pkgs.pkg-config pkgs.openssl ];
+          env = {
+            PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+          };
           meta = {
             description = "A CLI toolkit for streamlined Git repository interactions";
             homepage = "https://github.com/thaemisch/gitzeug";
