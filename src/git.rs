@@ -5,6 +5,7 @@ use tempfile::TempDir;
 
 use crate::model::build_tree;
 use crate::utils::print_tree;
+use crate::utils::openrouter;
 
 pub fn fetch_files(url: &str, paths: &[&str], output_dir: &Path) -> Result<()> {
     let dir = TempDir::new().context("Failed to create temp dir")?;
@@ -134,4 +135,30 @@ pub fn tree_structure(url: &str) -> Result<()> {
     let tree = build_tree(&paths);
     print_tree(&tree, "", true)?;
     Ok(())
+}
+
+pub fn get_diff() -> Result<String> {
+    let output = Command::new("git")
+        .args(["diff"])
+        .output()
+        .context("Failed to run git diff")?;
+    if !output.status.success() {
+        return Err(anyhow::anyhow!("Git diff failed"));
+    }
+    let diff = String::from_utf8(output.stdout)
+        .context("Invalid UTF-8 in git diff output")?;
+    Ok(diff)
+}
+
+pub async fn generate_commit_message(diff: &str) -> Result<String> {
+    let config = crate::utils::get_config()?;
+    let ai_cmsg = config.get("ai_cmsg").context("Missing 'ai_cmsg' section in config")?;
+    let key = ai_cmsg.get("key").and_then(|v| v.as_str()).context("Missing or invalid 'key' in ai_cmsg config")?;
+    let model = ai_cmsg.get("model").and_then(|v| v.as_str()).context("Missing or invalid 'model' in ai_cmsg config")?;
+    let msg_prefix = ai_cmsg.get("msg").and_then(|v| v.as_str()).unwrap_or("");
+    let msg = format!("{}\n{}", msg_prefix, diff);
+
+    openrouter(key, model, &msg)
+        .await
+        .context("Failed to generate commit message")
 }
