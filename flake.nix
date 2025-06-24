@@ -46,6 +46,8 @@
             rustfmt
             clippy
             git
+            pkgs.openssl
+            pkgs.pkg-config
           ];
           RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
         };
