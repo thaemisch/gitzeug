@@ -138,8 +138,12 @@ pub fn tree_structure(url: &str) -> Result<()> {
 }
 
 pub fn get_diff() -> Result<String> {
+    let _ = Command::new("git")
+        .args(["add", "."])
+        .status()
+        .context("Failed to add files to index")?;
     let output = Command::new("git")
-        .args(["diff"])
+        .args(["diff", "--cached"])
         .output()
         .context("Failed to run git diff")?;
     if !output.status.success() {
