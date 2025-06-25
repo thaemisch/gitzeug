@@ -118,6 +118,7 @@ pub async fn openrouter_check_limits(key: &str) -> Result<String, anyhow::Error>
         .await?;
 
     if !response.status().is_success() {
+        println!("Response status: {}", response.status());
         return Err(anyhow::anyhow!("Failed to check usage limits: {}", response.status()));
     }
 
